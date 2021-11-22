@@ -14,7 +14,7 @@ class AddingRatingColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('rating');
+            $table->integer('rating')->nullable();
         });
     }
 
