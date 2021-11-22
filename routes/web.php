@@ -31,4 +31,4 @@ Route::get('/test-two', 'TestController@test');
 // todo создать роуты с контроллерами
 // todo вывести какую-либо информацию в методах контроллера/ов
 
-
+Route::get('/get-user', 'TestController@getUserData');
