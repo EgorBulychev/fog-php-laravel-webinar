@@ -8,6 +8,10 @@ class TestController extends Controller
 {
     public function test(Request $request)
     {
-        return response()->json(['foo' => 'bar']);
+
+        return response()->json([
+            'foo'     => 'bar',
+            'request' => $request->all(),
+        ]);
     }
 }
