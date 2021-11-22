@@ -27,3 +27,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/test-two', 'TestController@test');
+
+// todo создать роуты с контроллерами
+// todo вывести какую-либо информацию в методах контроллера/ов
+
+
