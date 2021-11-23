@@ -8,6 +8,24 @@
                     <div class="panel-heading">Телефонный справочник</div>
 
                     <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Имя</th>
+                                    <th scope="col">Номер</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($phone_notes as $phone_note)
+                                    <tr>
+                                        <th scope="row">{{ $phone_note->id }}</th>
+                                        <td>{{ $phone_note->name }}</td>
+                                        <td>{{ $phone_note->number }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                         <form method="post" action="/phone-notes/create" class="form-inline">
 
                             {{ csrf_field() }}
@@ -32,7 +50,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
     </div>
 @endsection

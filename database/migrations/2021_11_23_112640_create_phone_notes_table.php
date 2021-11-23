@@ -15,6 +15,7 @@ class CreatePhoneNotesTable extends Migration
     {
         Schema::create('phone_notes', function (Blueprint $table) {
             $table->increments('id');
+            $table->bigIncrements('user_id');
             $table->string('name');
             $table->string('number');
             $table->timestamps();

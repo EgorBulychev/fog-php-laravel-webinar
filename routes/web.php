@@ -34,7 +34,7 @@ Route::get('/test-two', 'TestController@test');
 Route::get('/get-user', 'TestController@getUserData');
 
 Route::prefix('phone-notes')->group(function () {
-    Route::get('index', 'PhoneNoteController@index');
+    Route::get('index', 'PhoneNoteController@index')->name('index');
     Route::get('get-one', 'PhoneNoteController@getOne');
     Route::get('get-all', 'PhoneNoteController@getAll');
     Route::post('create', 'PhoneNoteController@create');
