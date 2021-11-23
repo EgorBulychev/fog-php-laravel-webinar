@@ -32,3 +32,12 @@ Route::get('/test-two', 'TestController@test');
 // todo вывести какую-либо информацию в методах контроллера/ов
 
 Route::get('/get-user', 'TestController@getUserData');
+
+Route::prefix('phone-notes')->group(function () {
+    Route::get('index', 'PhoneNoteController@index');
+    Route::get('get-one', 'PhoneNoteController@getOne');
+    Route::get('get-all', 'PhoneNoteController@getAll');
+    Route::post('create', 'PhoneNoteController@create');
+    Route::post('update', 'PhoneNoteController@update');
+    Route::delete('delete', 'PhoneNoteController@delete');
+});
