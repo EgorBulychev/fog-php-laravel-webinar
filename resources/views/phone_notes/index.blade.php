@@ -6,8 +6,8 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Телефонный справочник</div>
-
                     <div class="panel-body">
+                        Привет, {{ Auth::user()->name }} ({{ Auth::user()->id }})!
                         <table class="table">
                             <thead>
                                 <tr>

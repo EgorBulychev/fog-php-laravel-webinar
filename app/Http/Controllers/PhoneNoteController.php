@@ -11,6 +11,11 @@ use Illuminate\View\View;
 
 class PhoneNoteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Форма добавления записей и предварительный просмотр таблицы
      *
@@ -55,5 +60,9 @@ class PhoneNoteController extends Controller
 
     public function delete()
     {
+    }
+
+    public function getFile(Request $request) {
+        $file = $request->file('file');
     }
 }
