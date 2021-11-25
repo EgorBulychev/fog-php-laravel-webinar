@@ -25,20 +25,35 @@ class PhoneNoteController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
+        $offset = $request->get('offset');
+        $offset = $offset < 0 ? 0 : $offset;
 
         if ($search) {
             return view('phone_notes.index', [
                 'phone_notes' => PhoneNote::query()
                     ->where('user_id', Auth::user()->id)
                     ->where('name', 'like', "%$search%")
+                    ->offset($offset ?? 0)
+                    ->limit(10)
+                    ->orderBy('name')
                     ->get(),
-                'search' => $search,
+                'search'      => $search,
+                'offset'      => $offset,
             ]);
         }
 
+        $count = PhoneNote::query()->where('user_id', Auth::user()->id)->count();
+
         return view('phone_notes.index', [
-            'phone_notes' => PhoneNote::query()->where('user_id', Auth::user()->id)->get(),
-            'search' => '',
+            'phone_notes' => PhoneNote::query()
+                ->where('user_id', Auth::user()->id)
+                ->offset($offset ?? 0)
+                ->limit(10)
+                ->orderBy('name')
+                ->get(),
+            'search'      => '',
+            'offset'      => $offset,
+            'count'       => $count,
         ]);
     }
 
@@ -61,8 +76,8 @@ class PhoneNoteController extends Controller
         $data = $request->all();
 
         PhoneNote::create([
-            'name'   => $data['name'],
-            'number' => $data['number'],
+            'name'    => $data['name'],
+            'number'  => $data['number'],
             'user_id' => Auth::user()->id,
         ]);
 
@@ -77,7 +92,8 @@ class PhoneNoteController extends Controller
     {
     }
 
-    public function getFile(Request $request) {
+    public function getFile(Request $request)
+    {
         $file = $request->file('file');
     }
 }

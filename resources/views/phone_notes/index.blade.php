@@ -18,6 +18,11 @@
                         Телефонный справочник
                     </div>
                     <div class="panel-body">
+                        <div class="pull-right">
+                            <a href="/phone-notes/index?offset={{ $offset - 10 }}" class="btn btn-info btn-sm">Назад</a>
+                            {{ ($offset / 10) + 1 }} / {{ $count / 10 }}
+                            <a href="/phone-notes/index?offset={{ $offset + 10 }}" class="btn btn-info btn-sm">Вперёд</a>
+                        </div>
                         Привет, {{ Auth::user()->name }} ({{ Auth::user()->id }})!
                         <table class="table">
                             <thead>
