@@ -9,10 +9,10 @@
                         <form method="get" action="/phone-notes/index" class="pull-right">
                             <div class="form-group">
                                 <input type="text"
-                                       class="form-control"
                                        id="inputSearch"
                                        placeholder="Поиск..."
-                                       name="search">
+                                       name="search"
+                                       value="{{ $search }}">
                             </div>
                         </form>
                         Телефонный справочник

@@ -30,13 +30,15 @@ class PhoneNoteController extends Controller
             return view('phone_notes.index', [
                 'phone_notes' => PhoneNote::query()
                     ->where('user_id', Auth::user()->id)
-                    ->where('name', 'like', $search)
+                    ->where('name', 'like', "%$search%")
                     ->get(),
+                'search' => $search,
             ]);
         }
 
         return view('phone_notes.index', [
             'phone_notes' => PhoneNote::query()->where('user_id', Auth::user()->id)->get(),
+            'search' => '',
         ]);
     }
 
