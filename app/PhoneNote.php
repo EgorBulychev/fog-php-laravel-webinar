@@ -10,5 +10,6 @@ class PhoneNote extends Model
         'id',
         'name',
         'number',
+        'user_id',
     ];
 }

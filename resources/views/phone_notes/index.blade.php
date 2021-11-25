@@ -5,7 +5,18 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Телефонный справочник</div>
+                    <div class="panel-heading">
+                        <form method="get" action="/phone-notes/index" class="pull-right">
+                            <div class="form-group">
+                                <input type="text"
+                                       class="form-control"
+                                       id="inputSearch"
+                                       placeholder="Поиск..."
+                                       name="search">
+                            </div>
+                        </form>
+                        Телефонный справочник
+                    </div>
                     <div class="panel-body">
                         Привет, {{ Auth::user()->name }} ({{ Auth::user()->id }})!
                         <table class="table">

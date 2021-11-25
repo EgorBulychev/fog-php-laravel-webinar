@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\PhoneNote;
+use Auth;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -21,10 +22,21 @@ class PhoneNoteController extends Controller
      *
      * @return Factory|Application|View
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->get('search');
+
+        if ($search) {
+            return view('phone_notes.index', [
+                'phone_notes' => PhoneNote::query()
+                    ->where('user_id', Auth::user()->id)
+                    ->where('name', 'like', $search)
+                    ->get(),
+            ]);
+        }
+
         return view('phone_notes.index', [
-            'phone_notes' => PhoneNote::all(),
+            'phone_notes' => PhoneNote::query()->where('user_id', Auth::user()->id)->get(),
         ]);
     }
 
@@ -49,6 +61,7 @@ class PhoneNoteController extends Controller
         PhoneNote::create([
             'name'   => $data['name'],
             'number' => $data['number'],
+            'user_id' => Auth::user()->id,
         ]);
 
         return redirect()->route('index');
