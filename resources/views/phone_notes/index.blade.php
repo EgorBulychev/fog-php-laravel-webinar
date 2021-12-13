@@ -19,17 +19,23 @@
                     </div>
                     <div class="panel-body">
                         <div class="pull-right">
+                            @if ($offset > 0)
                             <a href="/phone-notes/index?offset={{ $offset - 10 }}" class="btn btn-info btn-sm">Назад</a>
-                            {{ ($offset / 10) + 1 }} / {{ $count / 10 }}
+                            @endif
+                            {{ ($offset / 10) + 1 }} / {{ ceil($count / 10) }}
+                            @if ($count-10 > $offset)
                             <a href="/phone-notes/index?offset={{ $offset + 10 }}" class="btn btn-info btn-sm">Вперёд</a>
+                            @endif
                         </div>
                         Привет, {{ Auth::user()->name }} ({{ Auth::user()->id }})!
+                        {{ Auth::user()->role }}
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Имя</th>
                                     <th scope="col">Номер</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,10 +44,16 @@
                                         <th scope="row">{{ $phone_note->id }}</th>
                                         <td>{{ $phone_note->name }}</td>
                                         <td>{{ $phone_note->number }}</td>
+                                        <td>
+                                            @if (Auth::user()->isRole('moderator'))
+                                                <a href="{{ route('phone.update', ['id' => $phone_note->id]) }}">Ред.</a>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        @if (Auth::user()->isRole('moderator'))
                         <form method="post" action="/phone-notes/create" class="form-inline">
 
                             {{ csrf_field() }}
@@ -62,6 +74,7 @@
 
                             <button type="submit" class="btn btn-primary mb-2">Сохранить</button>
                         </form>
+                        @endif
                     </div>
                 </div>
             </div>

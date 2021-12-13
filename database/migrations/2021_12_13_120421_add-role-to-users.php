@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePhoneNotesTable extends Migration
+class AddRoleToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreatePhoneNotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('phone_notes', function (Blueprint $table) {
-            $table->increments('id');
-            //$table->bigIncrements('user_id');
-            $table->string('name');
-            $table->string('number');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->enum('role', ['user', 'moderator', 'admin'])->default('user');
         });
     }
 
@@ -29,6 +25,6 @@ class CreatePhoneNotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('phone_notes');
+        //
     }
 }

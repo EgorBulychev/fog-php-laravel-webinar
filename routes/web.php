@@ -38,6 +38,15 @@ Route::prefix('phone-notes')->group(function () {
     Route::get('get-one', 'PhoneNoteController@getOne');
     Route::get('get-all', 'PhoneNoteController@getAll');
     Route::post('create', 'PhoneNoteController@create');
-    Route::post('update', 'PhoneNoteController@update');
+    Route::get('update', 'PhoneNoteController@update')->name('phone.update');
+    Route::post('save', 'PhoneNoteController@save')->name('phone.save');
     Route::delete('delete', 'PhoneNoteController@delete');
+});
+
+Route::prefix('users')->group(function () {
+    Route::get('index', 'UsersController@index')->name('users.index');
+    Route::get('edit', 'UsersController@edit')->name('users.edit');
+    Route::post('save', 'UsersController@save')->name('users.save');
+    Route::get('new', 'UsersController@new')->name('users.new');
+    Route::post('create', 'UsersController@create')->name('users.create');
 });

@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class PhoneNoteController extends Controller
@@ -28,33 +29,27 @@ class PhoneNoteController extends Controller
         $offset = $request->get('offset');
         $offset = $offset < 0 ? 0 : $offset;
 
-        if ($search) {
-            return view('phone_notes.index', [
-                'phone_notes' => PhoneNote::query()
-                    ->where('user_id', Auth::user()->id)
-                    ->where('name', 'like', "%$search%")
-                    ->offset($offset ?? 0)
-                    ->limit(10)
-                    ->orderBy('name')
-                    ->get(),
-                'search'      => $search,
-                'offset'      => $offset,
-            ]);
+        $count = PhoneNote::query()->count();
+
+        if ($offset > $count) {
+            return redirect(route('index'));
         }
 
-        $count = PhoneNote::query()->where('user_id', Auth::user()->id)->count();
+        $phoneNotes = PhoneNote::query()
+            ->offset($offset ?? 0)
+            ->limit(10)
+            ->orderBy('name');
+
+        if ($search) {
+            $phoneNotes->where('name', 'like', "%$search%");
+        }
 
         return view('phone_notes.index', [
-            'phone_notes' => PhoneNote::query()
-                ->where('user_id', Auth::user()->id)
-                ->offset($offset ?? 0)
-                ->limit(10)
-                ->orderBy('name')
-                ->get(),
-            'search'      => '',
-            'offset'      => $offset,
-            'count'       => $count,
-        ]);
+                'phone_notes' => $phoneNotes->get(),
+                'search'      => $search,
+                'offset'      => $offset,
+                'count'       => $count,
+            ]);
     }
 
     public function getOne()
@@ -84,8 +79,37 @@ class PhoneNoteController extends Controller
         return redirect()->route('index');
     }
 
-    public function update()
-    {
+    public function update(Request $request) {
+        if (auth()->check() && Auth::user()->isRole('moderator')) {
+            return view('phone_notes.update', [
+                'phone_note' => PhoneNote::where(['id' => $request->id])->firstOrFail()
+            ]);
+        }
+        abort(404);
+    }
+
+    public function save(Request $request) {
+        $messages = [
+            'required' => ':attribute нужно заполнить',
+        ];
+
+        $rules = [
+            'name' => 'required|max:255',
+            'number' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect(route('phone.update', ['id' => $request->id]))->withErrors($validator)->withInput();
+        }
+        $phoneNote = PhoneNote::where(['id' => $request->id])->firstOrFail();
+        $phoneNote->name = $request->name;
+        $phoneNote->number = $request->number;
+        $phoneNote->save();
+
+        return redirect()->back();
+
     }
 
     public function delete()
