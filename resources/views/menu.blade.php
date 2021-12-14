@@ -33,10 +33,11 @@
                     <li><a href="{{ route('login') }}">Login</a></li>
                     <li><a href="{{ route('register') }}">Register</a></li>
                 @else
+                    <li><a href="{{ route('users.profile') }}">Профиль</a></li>
                     <li><a href="{{ route('index') }}">Справочник</a></li>
-                    @if (Auth::user()->isRole('admin'))
-                        <li><a href="{{ route('users.index') }}">Пользователи</a></li>
-                    @endif
+                    @role(['admin'])
+                    <li><a href="{{ route('users.index') }}">Пользователи</a></li>
+                    @endrole
                     <li class="dropdown">
                         <a href="#"
                            class="dropdown-toggle"

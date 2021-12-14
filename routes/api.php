@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->get('/user', 'ApiUsersController@index');
+Route::middleware(['auth:api', 'role:admin'])->get('/user/list', 'ApiUsersController@list');
+Route::middleware(['auth:api', 'role:admin'])->post('/user/create', 'ApiUsersController@create');
+Route::middleware(['auth:api', 'role:admin'])->post('/user/{id}/role', 'ApiUsersController@role');
+
+Route::middleware('auth:api')->any('/phone-notes', 'ApiUsersController@phoneNotes');
+Route::middleware(['auth:api', 'role:moderator'])->post('/phone-notes/{id}/update', 'ApiUsersController@phoneNotesUpdate');
+Route::middleware(['auth:api', 'role:moderator'])->post('/phone-notes/create', 'ApiUsersController@phoneNotesCreate');

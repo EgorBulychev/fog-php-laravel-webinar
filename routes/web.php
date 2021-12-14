@@ -33,6 +33,10 @@ Route::get('/test-two', 'TestController@test');
 
 Route::get('/get-user', 'TestController@getUserData');
 
+Route::get('/profile', 'UsersController@profile')->name('users.profile');
+Route::post('/profile', 'UsersController@saveProfile')->name('users.save.profile');
+Route::get('/profile/token', 'UsersController@genApiToken')->name('users.token');
+
 Route::prefix('phone-notes')->group(function () {
     Route::get('index', 'PhoneNoteController@index')->name('index');
     Route::get('get-one', 'PhoneNoteController@getOne');
@@ -43,7 +47,7 @@ Route::prefix('phone-notes')->group(function () {
     Route::delete('delete', 'PhoneNoteController@delete');
 });
 
-Route::prefix('users')->group(function () {
+Route::group(['prefix' => 'users', 'middleware' => 'role:admin'], function () {
     Route::get('index', 'UsersController@index')->name('users.index');
     Route::get('edit', 'UsersController@edit')->name('users.edit');
     Route::post('save', 'UsersController@save')->name('users.save');

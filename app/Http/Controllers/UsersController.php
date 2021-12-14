@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
     public function index() {
-        if (auth()->check() && \Auth::user()->isRole('admin')) {
-            return view('users.index', ['users' => User::all()]);
-        } else {
-            abort(404);
-        }
+        return view('users.index', ['users' => User::all()]);
     }
 
     public function edit(Request $request) {
@@ -46,5 +43,32 @@ class UsersController extends Controller
         $user->save();
 
         return redirect(route('users.index'));
+    }
+
+    public function profile() {
+        return view('users.profile', ['user' => \Auth::user()]);
+    }
+
+    public function genApiToken() {
+        $token = Str::random(80);
+
+        $user =\Auth::user();
+        $user->api_token = $token;
+        $user->save();
+
+        return redirect(route('users.profile'));
+    }
+
+    public function saveProfile(Request $request) {
+        $valid = $request->validate([
+            'name' => 'required|max:255'
+        ]);
+
+        $user = \Auth::user();
+
+        $user->name = $request->name;
+        $user->save();
+
+        return redirect(route('users.profile'));
     }
 }
