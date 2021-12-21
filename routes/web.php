@@ -33,7 +33,7 @@ Route::get('/test-two', 'TestController@test');
 
 Route::get('/get-user', 'TestController@getUserData');
 
-Route::get('/profile', 'UsersController@profile')->name('users.profile');
+Route::get('/profile', 'UsersController@profile')->name('users.profile')->middleware('role:user:admin:moderator');
 Route::post('/profile', 'UsersController@saveProfile')->name('users.save.profile');
 Route::get('/profile/token', 'UsersController@genApiToken')->name('users.token');
 

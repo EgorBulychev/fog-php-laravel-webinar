@@ -11,6 +11,10 @@ class PhoneNotesSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\PhoneNote::class, 1000)->create();
+        if (app()->environment() === 'testing') {
+
+        } else {
+            factory(App\PhoneNote::class, 1000)->create();
+        }
     }
 }

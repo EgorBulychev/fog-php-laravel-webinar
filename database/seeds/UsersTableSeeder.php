@@ -6,7 +6,30 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        factory(App\User::class, 20)->create();
+        if (app()->environment() === 'testing') {
+            DB::table('users')->insert([
+                'name' => 'User',
+                'email' => 'user@user.com',
+                'password' => Hash::make('password'),
+                'role' => 'user'
+            ]);
+
+            DB::table('users')->insert([
+                'name' => 'Moderator',
+                'email' => 'moderator@moderator.com',
+                'password' => Hash::make('password'),
+                'role' => 'moderator'
+            ]);
+
+            DB::table('users')->insert([
+                'name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'password' => Hash::make('password'),
+                'role' => 'admin'
+            ]);
+        } else {
+            factory(App\User::class, 20)->create();
+        }
 
         // todo разобраться с сидерами и фабриками
         // https://laravel.com/docs/5.5/seeding

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\PhoneCreate;
 use App\PhoneNote;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -38,7 +40,7 @@ class PhoneNoteController extends Controller
         $phoneNotes = PhoneNote::query()
             ->offset($offset ?? 0)
             ->limit(10)
-            ->orderBy('name');
+            ->orderByDesc('id');
 
         if ($search) {
             $phoneNotes->where('name', 'like', "%$search%");
@@ -61,6 +63,13 @@ class PhoneNoteController extends Controller
     {
     }
 
+    public function jobCreate($name, $number, $user_id) {
+        PhoneNote::create([
+            'name'    => $name,
+            'number'  => $number,
+            'user_id' => $user_id,
+        ]);
+    }
     /**
      * @param Request $request
      *
@@ -70,11 +79,13 @@ class PhoneNoteController extends Controller
     {
         $data = $request->all();
 
-        PhoneNote::create([
+        dispatch(new PhoneCreate($data['name'], $data['number'], Auth::user()->id))->delay(Carbon::now()->addSecond(10));
+
+        /*PhoneNote::create([
             'name'    => $data['name'],
             'number'  => $data['number'],
             'user_id' => Auth::user()->id,
-        ]);
+        ]);*/
 
         return redirect()->route('index');
     }
