@@ -31,6 +31,8 @@ Route::get('/test-two', 'TestController@test');
 // todo создать роуты с контроллерами
 // todo вывести какую-либо информацию в методах контроллера/ов
 
+Route::get('/db', 'TestController@db');
+
 Route::get('/get-user', 'TestController@getUserData');
 
 Route::get('/profile', 'UsersController@profile')->name('users.profile')->middleware('role:user:admin:moderator');
@@ -53,4 +55,8 @@ Route::group(['prefix' => 'users', 'middleware' => 'role:admin'], function () {
     Route::post('save', 'UsersController@save')->name('users.save');
     Route::get('new', 'UsersController@new')->name('users.new');
     Route::post('create', 'UsersController@create')->name('users.create');
+
+    Route::get('export', 'UsersController@export')->name('users.export');
+    Route::get('import', 'UsersController@import')->name('users.import');
+    Route::post('import', 'UsersController@importData')->name('users.import.data');
 });

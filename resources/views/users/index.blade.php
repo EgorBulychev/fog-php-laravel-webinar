@@ -3,7 +3,8 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <a href="{{ route('users.new') }}">Создать</a>
+            <a href="{{ route('users.new') }}">Создать</a>, <a href="{{ route('users.export') }}">Экспорт</a>
+            <a href="{{ route('users.import') }}">Импорт</a>
     <table class="table">
 
         <thead>

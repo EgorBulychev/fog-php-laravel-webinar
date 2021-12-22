@@ -71,4 +71,41 @@ class UsersController extends Controller
 
         return redirect(route('users.profile'));
     }
+
+    public function export() {
+        $exportFile = storage_path().'/export.csv';
+
+        if (file_exists($exportFile)) {
+            return response()->download($exportFile);
+        } else {
+            \Artisan::call('export:users');
+            return 'Запущен процесс';
+        }
+    }
+
+    public function import() {
+        return view('users.import');
+    }
+
+    public function importData(Request $request) {
+        $import = file($request->file('import')->path());
+
+        $count = 0;
+        foreach ($import as $item) {
+            if (empty(trim($item))) continue;
+            $user = explode("\t", trim($item));
+
+            if (!User::where(['email' => $user[1]])->first()) {
+                $user = User::create([
+                    'name' => $user[0],
+                    'email' => $user[1],
+                    'role' => $user[2],
+                    'password' => \Hash::make('qwerty')
+                ]);
+                if ($user) $count++;
+            }
+        }
+
+        return view('users.import_result', ['count' => $count]);
+    }
 }
