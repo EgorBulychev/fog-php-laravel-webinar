@@ -33,10 +33,19 @@ class TestController extends Controller
 
         $phoneNotes = PhoneNote::join('users', 'phone_notes.user_id', '=', 'users.id')
             ->select(['phone_notes.*', 'users.email'])
-            ->whereIn('user_id', User::where('email', 'like', '%.com%')->select('id')->get()->toArray())
+            ->whereIn('user_id', User::where('email', 'like', '%.com%')
+                ->select('id')->get()->toArray())
             ->orderByDesc('id')
             ->take(50)->get();
 
         return view('db', ['phones' => $phoneNotes]);
+    }
+
+    public function session(Request $request) {
+        session(['qwerty' => 'Russia 2']);
+    }
+
+    public function sessionRead() {
+        dd(session('qwerty'));
     }
 }

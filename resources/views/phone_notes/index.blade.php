@@ -33,6 +33,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">UserID</th>
                                     <th scope="col">Имя</th>
                                     <th scope="col">Номер</th>
                                     <th scope="col"></th>
@@ -42,6 +43,7 @@
                                 @foreach($phone_notes as $phone_note)
                                     <tr>
                                         <th scope="row">{{ $phone_note->id }}</th>
+                                        <th>{{ $phone_note->user_id }}</th>
                                         <td>{{ $phone_note->name }}</td>
                                         <td>{{ $phone_note->number }}</td>
                                         <td>

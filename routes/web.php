@@ -32,12 +32,18 @@ Route::get('/test-two', 'TestController@test');
 // todo вывести какую-либо информацию в методах контроллера/ов
 
 Route::get('/db', 'TestController@db');
+Route::get('/session', 'TestController@session');
+Route::get('/read', 'TestController@sessionRead');
 
 Route::get('/get-user', 'TestController@getUserData');
 
 Route::get('/profile', 'UsersController@profile')->name('users.profile')->middleware('role:user:admin:moderator');
 Route::post('/profile', 'UsersController@saveProfile')->name('users.save.profile');
 Route::get('/profile/token', 'UsersController@genApiToken')->name('users.token');
+
+Route::get('/post', 'PostController@index')->name('post');
+Route::get('/post/edit', 'PostController@edit')->name('post.edit');
+Route::post('/post/edit', 'PostController@save')->name('post.save');
 
 Route::prefix('phone-notes')->group(function () {
     Route::get('index', 'PhoneNoteController@index')->name('index');

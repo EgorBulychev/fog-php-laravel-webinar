@@ -43,7 +43,9 @@ class PhoneNoteController extends Controller
             ->orderByDesc('id');
 
         if ($search) {
-            $phoneNotes->where('name', 'like', "%$search%");
+            /*$phoneNotes->where('name', 'like', "%$search%")
+                ->orWhere('number', 'like', "%$search%");*/
+            $phoneNotes = PhoneNote::search($search)->where('user_id', auth()->id());
         }
 
         return view('phone_notes.index', [
